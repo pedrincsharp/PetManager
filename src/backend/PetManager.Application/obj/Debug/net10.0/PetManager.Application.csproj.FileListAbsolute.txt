@@ -1,0 +1,17 @@
+D:\Projetos\Desenvolvimento\Gestão Pet\src\backend\PetManager.Application\bin\Debug\net10.0\PetManager.Application.deps.json
+D:\Projetos\Desenvolvimento\Gestão Pet\src\backend\PetManager.Application\bin\Debug\net10.0\PetManager.Application.dll
+D:\Projetos\Desenvolvimento\Gestão Pet\src\backend\PetManager.Application\bin\Debug\net10.0\PetManager.Application.pdb
+D:\Projetos\Desenvolvimento\Gestão Pet\src\backend\PetManager.Application\bin\Debug\net10.0\PetManager.Domain.dll
+D:\Projetos\Desenvolvimento\Gestão Pet\src\backend\PetManager.Application\bin\Debug\net10.0\PetManager.Infrastructure.dll
+D:\Projetos\Desenvolvimento\Gestão Pet\src\backend\PetManager.Application\bin\Debug\net10.0\PetManager.Infrastructure.pdb
+D:\Projetos\Desenvolvimento\Gestão Pet\src\backend\PetManager.Application\bin\Debug\net10.0\PetManager.Domain.pdb
+D:\Projetos\Desenvolvimento\Gestão Pet\src\backend\PetManager.Application\obj\Debug\net10.0\PetManager.Application.csproj.AssemblyReference.cache
+D:\Projetos\Desenvolvimento\Gestão Pet\src\backend\PetManager.Application\obj\Debug\net10.0\PetManager.Application.GeneratedMSBuildEditorConfig.editorconfig
+D:\Projetos\Desenvolvimento\Gestão Pet\src\backend\PetManager.Application\obj\Debug\net10.0\PetManager.Application.AssemblyInfoInputs.cache
+D:\Projetos\Desenvolvimento\Gestão Pet\src\backend\PetManager.Application\obj\Debug\net10.0\PetManager.Application.AssemblyInfo.cs
+D:\Projetos\Desenvolvimento\Gestão Pet\src\backend\PetManager.Application\obj\Debug\net10.0\PetManager.Application.csproj.CoreCompileInputs.cache
+D:\Projetos\Desenvolvimento\Gestão Pet\src\backend\PetManager.Application\obj\Debug\net10.0\PetManag.051568E0.Up2Date
+D:\Projetos\Desenvolvimento\Gestão Pet\src\backend\PetManager.Application\obj\Debug\net10.0\PetManager.Application.dll
+D:\Projetos\Desenvolvimento\Gestão Pet\src\backend\PetManager.Application\obj\Debug\net10.0\refint\PetManager.Application.dll
+D:\Projetos\Desenvolvimento\Gestão Pet\src\backend\PetManager.Application\obj\Debug\net10.0\PetManager.Application.pdb
+D:\Projetos\Desenvolvimento\Gestão Pet\src\backend\PetManager.Application\obj\Debug\net10.0\ref\PetManager.Application.dll

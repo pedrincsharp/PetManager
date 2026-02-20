@@ -1,0 +1,11 @@
+D:\Projetos\Desenvolvimento\Gestão Pet\src\backend\PetManager.Domain\bin\Debug\net10.0\PetManager.Domain.deps.json
+D:\Projetos\Desenvolvimento\Gestão Pet\src\backend\PetManager.Domain\bin\Debug\net10.0\PetManager.Domain.dll
+D:\Projetos\Desenvolvimento\Gestão Pet\src\backend\PetManager.Domain\bin\Debug\net10.0\PetManager.Domain.pdb
+D:\Projetos\Desenvolvimento\Gestão Pet\src\backend\PetManager.Domain\obj\Debug\net10.0\PetManager.Domain.GeneratedMSBuildEditorConfig.editorconfig
+D:\Projetos\Desenvolvimento\Gestão Pet\src\backend\PetManager.Domain\obj\Debug\net10.0\PetManager.Domain.AssemblyInfoInputs.cache
+D:\Projetos\Desenvolvimento\Gestão Pet\src\backend\PetManager.Domain\obj\Debug\net10.0\PetManager.Domain.AssemblyInfo.cs
+D:\Projetos\Desenvolvimento\Gestão Pet\src\backend\PetManager.Domain\obj\Debug\net10.0\PetManager.Domain.csproj.CoreCompileInputs.cache
+D:\Projetos\Desenvolvimento\Gestão Pet\src\backend\PetManager.Domain\obj\Debug\net10.0\PetManager.Domain.dll
+D:\Projetos\Desenvolvimento\Gestão Pet\src\backend\PetManager.Domain\obj\Debug\net10.0\refint\PetManager.Domain.dll
+D:\Projetos\Desenvolvimento\Gestão Pet\src\backend\PetManager.Domain\obj\Debug\net10.0\PetManager.Domain.pdb
+D:\Projetos\Desenvolvimento\Gestão Pet\src\backend\PetManager.Domain\obj\Debug\net10.0\ref\PetManager.Domain.dll
