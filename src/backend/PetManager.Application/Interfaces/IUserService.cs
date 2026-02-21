@@ -13,4 +13,5 @@ public interface IUserService
     Task<User> GetUserAsync(Guid id);
     Task DeleteUserAsync(Guid id);
     Task InactivateUserAsync(Guid id);
+    Task<User?> AuthenticateAsync(string username, string password);
 }

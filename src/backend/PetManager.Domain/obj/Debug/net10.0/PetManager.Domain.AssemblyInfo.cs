@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("PetManager.Domain")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+ce87c835a21d627f75ef86bcb6d2fe8b278e8d08")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+c0562a9ba265bd12e81ff44e40b1de9b38651476")]
 [assembly: System.Reflection.AssemblyProductAttribute("PetManager.Domain")]
 [assembly: System.Reflection.AssemblyTitleAttribute("PetManager.Domain")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

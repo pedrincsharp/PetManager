@@ -13,6 +13,8 @@ public class AppDbContext : DbContext
     }
 
     public DbSet<User> Users { get; set; }
+    public DbSet<ApiKey> ApiKeys { get; set; }
+    public DbSet<RefreshToken> RefreshTokens { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -75,6 +77,76 @@ public class AppDbContext : DbContext
             entity.Property(u => u.Status)
                 .IsRequired()
                 .HasColumnName("status");
+        });
+
+        modelBuilder.Entity<ApiKey>(entity =>
+        {
+            entity.ToTable("api_keys");
+
+            entity.HasKey(a => a.Id);
+            entity.Property(a => a.Id).ValueGeneratedNever();
+
+            entity.Property(a => a.Key)
+                .IsRequired()
+                .HasMaxLength(500)
+                .HasColumnName("key");
+            entity.HasIndex(a => a.Key).IsUnique();
+
+            entity.Property(a => a.Description)
+                .IsRequired()
+                .HasMaxLength(500)
+                .HasColumnName("description");
+
+            entity.Property(a => a.CreatedAt)
+                .IsRequired()
+                .HasColumnName("created_at")
+                .HasDefaultValueSql("now()")
+                .ValueGeneratedOnAdd();
+
+            entity.Property(a => a.IsActive)
+                .IsRequired()
+                .HasColumnName("is_active")
+                .HasDefaultValue(true);
+        });
+
+        modelBuilder.Entity<RefreshToken>(entity =>
+        {
+            entity.ToTable("refresh_tokens");
+
+            entity.HasKey(r => r.Id);
+            entity.Property(r => r.Id).ValueGeneratedNever();
+
+            entity.Property(r => r.ApiKeyId)
+                .IsRequired()
+                .HasColumnName("api_key_id");
+
+            entity.Property(r => r.Token)
+                .IsRequired()
+                .HasMaxLength(500)
+                .HasColumnName("token");
+
+            entity.Property(r => r.CreatedAt)
+                .IsRequired()
+                .HasColumnName("created_at")
+                .HasDefaultValueSql("now()")
+                .ValueGeneratedOnAdd();
+
+            entity.Property(r => r.ExpiresAt)
+                .IsRequired()
+                .HasColumnName("expires_at");
+
+            entity.Property(r => r.IsRevoked)
+                .IsRequired()
+                .HasColumnName("is_revoked")
+                .HasDefaultValue(false);
+
+            // Foreign key
+            entity.HasOne(r => r.ApiKey)
+                .WithMany()
+                .HasForeignKey(r => r.ApiKeyId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            entity.HasIndex(r => r.Token).IsUnique();
         });
     }
 }

@@ -71,4 +71,12 @@ public class UserService : IUserService
         if (existing == null) throw new PetManager.Application.Exceptions.UserNotFoundException($"User with id '{id}' not found");
         await _repo.InactivateAsync(id);
     }
+
+    public async Task<User?> AuthenticateAsync(string username, string password)
+    {
+        var user = await _repo.GetByUsernameAsync(username);
+        if (user == null) return null;
+        if (!BCrypt.Net.BCrypt.Verify(password, user.PasswordHash)) return null;
+        return user;
+    }
 }

@@ -51,6 +51,11 @@ public class UserRepository : IUserRepository
         return existing;
     }
 
+    public async Task<User?> GetByUsernameAsync(string username)
+    {
+        return await _db.Users.FirstOrDefaultAsync(u => u.Username == username && u.Status != Status.Deleted);
+    }
+
     public async Task DeleteAsync(Guid id)
     {
         var existing = await _db.Users.FirstOrDefaultAsync(u => u.Id == id && u.Status != Status.Deleted);
