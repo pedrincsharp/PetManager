@@ -1,0 +1,16 @@
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using PetManager.Domain.Models;
+
+namespace PetManager.Infrastructure.Repositories;
+
+public interface IUserRepository
+{
+    Task<User> CreateAsync(User user);
+    Task<User?> GetByIdAsync(Guid id);
+    Task<IEnumerable<User>> GetAllAsync();
+    Task<User?> UpdateAsync(User user);
+    Task DeleteAsync(Guid id);
+    Task InactivateAsync(Guid id);
+}

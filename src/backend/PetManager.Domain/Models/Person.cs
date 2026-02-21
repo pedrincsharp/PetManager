@@ -21,9 +21,29 @@ public class Person: ModelBase
         Role = role;
     }
 
-    public void ChangeName(string name) => Name = name;
-    public void ChangeEmail(string email) => Email = email;
-    public void ChangeCellphone(string cellphone) => Cellphone = cellphone;
-    public void ChangeDocument(string document) => Document = document;
-    public void ChangeRole(Role role) => Role = role;
+    public void ChangeName(string name)
+    {
+        Name = name;
+        this.UpdateTimestamps();
+    }
+    public void ChangeEmail(string email)
+    {
+        Email = email;
+        this.UpdateTimestamps();
+    }
+    public void ChangeCellphone(string cellphone)
+    {
+        Cellphone = cellphone;
+        this.UpdateTimestamps();
+    }
+    public void ChangeDocument(string document)
+    {
+        Document = document;
+        this.UpdateTimestamps();
+    }
+    public void ChangeRole(Role role)
+    {
+        Role = role;
+        this.UpdateTimestamps();
+    }
 }

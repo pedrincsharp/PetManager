@@ -15,6 +15,14 @@ public class User : Person
         PasswordHash = passwordHash;
     }
 
-    public void ChangeUsername(string username) => Username = username;
-    public void ChangePasswordHash(string passwordHash) => PasswordHash = passwordHash;
+    public void ChangeUsername(string username)
+    {
+        Username = username;
+        this.UpdateTimestamps();
+    }
+    public void ChangePasswordHash(string passwordHash)
+    {
+        PasswordHash = passwordHash;
+        this.UpdateTimestamps();
+    }
 }

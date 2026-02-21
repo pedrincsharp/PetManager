@@ -17,4 +17,11 @@ public class ModelBase
         UpdatedAt = DateTime.UtcNow;
         Status = Status.Active;
     }
+
+    public void ChangeStatus(Status status)
+    {
+        Status = status;
+        this.UpdateTimestamps();
+    }
+    public void UpdateTimestamps() => UpdatedAt = DateTime.UtcNow;
 }
