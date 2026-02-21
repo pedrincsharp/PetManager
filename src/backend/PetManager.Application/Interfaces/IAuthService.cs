@@ -9,4 +9,5 @@ public interface IAuthService
 {
     Task<TokenResponseDto> GenerateTokensByApiKeyAsync(string apiKey);
     Task<TokenResponseDto> RefreshAccessTokenAsync(string refreshToken);
+    Task<TokenResponseDto> LoginAsync(string username, string password);
 }

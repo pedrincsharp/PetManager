@@ -117,8 +117,10 @@ public class AppDbContext : DbContext
             entity.Property(r => r.Id).ValueGeneratedNever();
 
             entity.Property(r => r.ApiKeyId)
-                .IsRequired()
                 .HasColumnName("api_key_id");
+
+            entity.Property(r => r.UserId)
+                .HasColumnName("user_id");
 
             entity.Property(r => r.Token)
                 .IsRequired()
@@ -140,11 +142,18 @@ public class AppDbContext : DbContext
                 .HasColumnName("is_revoked")
                 .HasDefaultValue(false);
 
-            // Foreign key
+            // Foreign keys - both are optional (either ApiKeyId or UserId must be set)
             entity.HasOne(r => r.ApiKey)
                 .WithMany()
                 .HasForeignKey(r => r.ApiKeyId)
-                .OnDelete(DeleteBehavior.Cascade);
+                .OnDelete(DeleteBehavior.Cascade)
+                .IsRequired(false);
+
+            entity.HasOne(r => r.User)
+                .WithMany()
+                .HasForeignKey(r => r.UserId)
+                .OnDelete(DeleteBehavior.Cascade)
+                .IsRequired(false);
 
             entity.HasIndex(r => r.Token).IsUnique();
         });

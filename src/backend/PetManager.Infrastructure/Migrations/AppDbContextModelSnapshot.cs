@@ -64,7 +64,7 @@ namespace PetManager.Infrastructure.Migrations
                     b.Property<Guid>("Id")
                         .HasColumnType("uuid");
 
-                    b.Property<Guid>("ApiKeyId")
+                    b.Property<Guid?>("ApiKeyId")
                         .HasColumnType("uuid")
                         .HasColumnName("api_key_id");
 
@@ -90,12 +90,18 @@ namespace PetManager.Infrastructure.Migrations
                         .HasColumnType("character varying(500)")
                         .HasColumnName("token");
 
+                    b.Property<Guid?>("UserId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("user_id");
+
                     b.HasKey("Id");
 
                     b.HasIndex("ApiKeyId");
 
                     b.HasIndex("Token")
                         .IsUnique();
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("refresh_tokens", (string)null);
                 });
@@ -175,10 +181,16 @@ namespace PetManager.Infrastructure.Migrations
                     b.HasOne("PetManager.Domain.Models.ApiKey", "ApiKey")
                         .WithMany()
                         .HasForeignKey("ApiKeyId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("PetManager.Domain.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.Navigation("ApiKey");
+
+                    b.Navigation("User");
                 });
 #pragma warning restore 612, 618
         }

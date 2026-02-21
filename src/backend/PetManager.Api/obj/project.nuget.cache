@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "HnJBewCjVRI=",
+  "dgSpecHash": "PgaV4KFwYC4=",
   "success": true,
-  "projectFilePath": "D:\\Projetos\\Desenvolvimento\\Gestão Pet\\src\\backend\\PetManager.Api\\PetManager.Api.csproj",
+  "projectFilePath": "d:\\Projetos\\Desenvolvimento\\Gestão Pet\\src\\backend\\PetManager.Api\\PetManager.Api.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\joao_\\.nuget\\packages\\automapper\\12.0.1\\automapper.12.0.1.nupkg.sha512",
     "C:\\Users\\joao_\\.nuget\\packages\\automapper.extensions.microsoft.dependencyinjection\\12.0.1\\automapper.extensions.microsoft.dependencyinjection.12.0.1.nupkg.sha512",

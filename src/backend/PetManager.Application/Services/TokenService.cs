@@ -61,6 +61,48 @@ public class TokenService : ITokenService
         return new JwtSecurityTokenHandler().WriteToken(token);
     }
 
+    public TokenResponseDto GenerateTokensForUser(User user)
+    {
+        var accessToken = GenerateAccessTokenForUser(user);
+        var refreshToken = GenerateRefreshToken();
+        var expirationMinutes = int.TryParse(_configuration.GetSection("Jwt")["AccessTokenExpirationMinutes"], out var m) ? m : 60;
+        var expiresAt = DateTime.UtcNow.AddMinutes(expirationMinutes);
+
+        return new TokenResponseDto(accessToken, refreshToken, expiresAt);
+    }
+
+    public string GenerateAccessTokenForUser(User user)
+    {
+        var jwtSection = _configuration.GetSection("Jwt");
+        var key = jwtSection["Key"] ?? throw new InvalidOperationException("Jwt:Key is not configured");
+        var issuer = jwtSection["Issuer"] ?? "PetManager";
+        var audience = jwtSection["Audience"] ?? "PetManagerClients";
+        var minutes = int.TryParse(jwtSection["AccessTokenExpirationMinutes"], out var m) ? m : 60;
+
+        var claims = new List<Claim>
+        {
+            new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
+            new Claim(JwtRegisteredClaimNames.Email, user.Email),
+            new Claim("username", user.Username),
+            new Claim("role", user.Role.ToString()),
+            new Claim(JwtRegisteredClaimNames.Iat, DateTimeOffset.UtcNow.ToUnixTimeSeconds().ToString(), ClaimValueTypes.Integer64)
+        };
+
+        var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(key));
+        var creds = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
+        var expires = DateTime.UtcNow.AddMinutes(minutes);
+
+        var token = new JwtSecurityToken(
+            issuer: issuer,
+            audience: audience,
+            claims: claims,
+            expires: expires,
+            signingCredentials: creds
+        );
+
+        return new JwtSecurityTokenHandler().WriteToken(token);
+    }
+
     public static string GenerateRefreshToken()
     {
         var randomNumber = new byte[32];

@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "D:\\Projetos\\Desenvolvimento\\Gestão Pet\\src\\backend\\PetManager.Domain\\PetManager.Domain.csproj": {}
+    "d:\\Projetos\\Desenvolvimento\\Gestão Pet\\src\\backend\\PetManager.Domain\\PetManager.Domain.csproj": {}
   },
   "projects": {
-    "D:\\Projetos\\Desenvolvimento\\Gestão Pet\\src\\backend\\PetManager.Domain\\PetManager.Domain.csproj": {
+    "d:\\Projetos\\Desenvolvimento\\Gestão Pet\\src\\backend\\PetManager.Domain\\PetManager.Domain.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Projetos\\Desenvolvimento\\Gestão Pet\\src\\backend\\PetManager.Domain\\PetManager.Domain.csproj",
+        "projectUniqueName": "d:\\Projetos\\Desenvolvimento\\Gestão Pet\\src\\backend\\PetManager.Domain\\PetManager.Domain.csproj",
         "projectName": "PetManager.Domain",
-        "projectPath": "D:\\Projetos\\Desenvolvimento\\Gestão Pet\\src\\backend\\PetManager.Domain\\PetManager.Domain.csproj",
+        "projectPath": "d:\\Projetos\\Desenvolvimento\\Gestão Pet\\src\\backend\\PetManager.Domain\\PetManager.Domain.csproj",
         "packagesPath": "C:\\Users\\joao_\\.nuget\\packages\\",
-        "outputPath": "D:\\Projetos\\Desenvolvimento\\Gestão Pet\\src\\backend\\PetManager.Domain\\obj\\",
+        "outputPath": "d:\\Projetos\\Desenvolvimento\\Gestão Pet\\src\\backend\\PetManager.Domain\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

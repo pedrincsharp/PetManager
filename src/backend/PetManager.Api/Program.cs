@@ -16,6 +16,19 @@ builder.Services.AddControllers();
 
 builder.Services.AddEndpointsApiExplorer();
 
+// CORS para desenvolvimento (React em localhost:5173)
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowReactDev", policy =>
+    {
+        policy
+            .WithOrigins("http://localhost:5173", "http://localhost:3000")
+            .AllowAnyMethod()
+            .AllowAnyHeader()
+            .AllowCredentials();
+    });
+});
+
 // JWT Authentication
 var jwtKey = builder.Configuration["Jwt:Key"];
 if (!string.IsNullOrEmpty(jwtKey))
@@ -89,6 +102,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseMiddleware<ApiExceptionMiddleware>();
 app.UseHttpsRedirection();
+app.UseCors("AllowReactDev");
 app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();

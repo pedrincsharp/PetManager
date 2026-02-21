@@ -1,71 +1,185 @@
-<!-- Copied to repo to help AI coding agents. Keep short and specific to this project. -->
+<!-- Copilot instructions for PetManager veterinary clinic management system. Keep short and specific. -->
 
-# Copilot instructions for PetManager
+# Copilot Instructions for PetManager
 
-Purpose
+## Purpose
 
-- Help AI agents be productive in this mono-repo containing a small ASP.NET backend solution and docs.
+Help AI agents understand this mono-repo: a React (Vite) + ASP.NET Core backend system for veterinary clinic management.
 
-Quick architecture
+## Quick Architecture
 
-- Solution: `src/backend/PetManager.slnx` contains 4 projects:
-  - `PetManager.Api` — minimal Web API (controllers + Program.cs)
-  - `PetManager.Application` — application/service layer
-  - `PetManager.Domain` — domain models and enums (see `Domain/Models`)
-  - `PetManager.Infrastructure` — EF Core `AppDbContext` and infra
-- Data flow: Controllers -> Application services -> Domain models -> Infrastructure (DbContext).
+**Backend** (`src/backend/PetManager.slnx` — 4 projects):
 
-What to look at first
+- `PetManager.Api` — HTTP endpoints, middleware, Swagger, JWT/ApiKey auth setup
+- `PetManager.Application` — services (UserService, AuthService), DTOs, mappers, business logic
+- `PetManager.Domain` — models (`ModelBase` → `Person` → `User`), enums (`Role`, `Status`)
+- `PetManager.Infrastructure` — PostgreSQL via EF Core DbContext, Repository pattern, migrations
 
-- `src/backend/PetManager.Api/Program.cs` — app startup, middleware, Swagger (dev only).
-- `src/backend/PetManager.Infrastructure/AppDbContext.cs` — EF Core DbContext; register it in Program.cs when adding DB.
-- `src/backend/PetManager.Domain/Models` — `ModelBase`, `Person`, `User`: conventions for IDs, timestamps and `Status`.
-- `readme.md` and `docs/documentation.md` — product requirements and high-level scope.
+**Frontend** (`src/frontend/petmanager`):
 
-Build & run (local)
+- React 19 + Typescript, Vite bundler, Tailwind CSS v4, ESLint
+- **Clean Architecture**: Presentation → Application → Infrastructure → Core
+- **Authentication**: JWT tokens with 60-minute expiration
+- **Styling**: Gradient blue-to-emerald theme
 
-- Build solution:
+**Data flow**: HTTP request → Controller → IService → Domain model (mutation via methods) → IRepository → DB.
 
-  dotnet build "src/backend/PetManager.slnx"
+## What to Read First
 
-- Run API (development):
+1. **Scope**: [docs/documentation.md](docs/documentation.md) — functional requirements (7 modules: users, clients, pets, services, appointments, payments, dashboard)
+2. **Backend Architecture**: [src/backend/PetManager.Api/Program.cs](src/backend/PetManager.Api/Program.cs) — startup, DI, JWT config, Npgsql
+3. **Domain model hierarchy**: [src/backend/PetManager.Domain/Models/ModelBase.cs](src/backend/PetManager.Domain/Models/ModelBase.cs) (`Id` = Guid v7, `CreatedAt`, `UpdatedAt`, `Status`)
+4. **Entities**: [Person.cs](src/backend/PetManager.Domain/Models/Person.cs), [User.cs](src/backend/PetManager.Domain/Models/User.cs) — mutation via `ChangeName()`, `ChangeRole()`, etc.
+5. **Frontend Docs**: [ARCHITECTURE.md](src/frontend/petmanager/ARCHITECTURE.md) — Clean Architecture pattern for UI
+6. **Implementation**: [IMPLEMENTATION_SUMMARY.md](IMPLEMENTATION_SUMMARY.md) — complete login system overview
 
-  # Powershell
+## Build & Run
 
-  $env:ASPNETCORE_ENVIRONMENT = 'Development'
-  dotnet run --project src/backend/PetManager.Api/PetManager.Api.csproj
+**Backend**:
 
-Key project-specific conventions
+```powershell
+# Build
+dotnet build "src/backend/PetManager.slnx"
 
-- Domain entities derive from `ModelBase` and manage timestamps/status internally. Use provided methods (e.g. `UpdateTimestamps()`).
-- Minimal Program.cs: DI registrations are manual — add services and DbContext here.
-- Controllers use attribute routing (e.g. `api/[controller]`) and return `IActionResult`.
-- No authentication is configured yet, but `UseAuthorization()` is present — add auth schemes before that middleware.
+# Run (dev)
+$env:ASPNETCORE_ENVIRONMENT = 'Development'
+dotnet run --project src/backend/PetManager.Api/PetManager.Api.csproj
+# Swagger at http://localhost:5000/swagger
+```
 
-Database & Migrations (notes)
+**Frontend**:
 
-- No connection string or DbContext registration is present. When adding DB support:
-  - Add `Microsoft.EntityFrameworkCore` provider package (Postgres/SqlServer).
-  - Register `AppDbContext` in `Program.cs` via `builder.Services.AddDbContext<AppDbContext>(...)`.
-  - Create migrations using `dotnet ef` CLI, example:
+```bash
+cd src/frontend/petmanager
+npm install react-router-dom # if needed
+npm run dev    # http://localhost:5173
+npm run build
+npm run lint
+```
 
-    dotnet ef migrations add Initial -p src/backend/PetManager.Infrastructure -s src/backend/PetManager.Api
+**Database**:
 
-Patterns to preserve
+```bash
+# Start PostgreSQL (Docker)
+docker-compose up -d
 
-- Keep business logic in `PetManager.Application` / `PetManager.Domain` — controllers should be thin.
-- Use value-object-like methods on domain models to mutate state (e.g., `ChangeName`, `ChangeStatus`).
+# Apply migrations
+dotnet ef database update -p src/backend/PetManager.Infrastructure -s src/backend/PetManager.Api
+# Or use: src/backend/migrate.ps1 (PowerShell)
+```
 
-Where not to guess
+## Key Patterns
 
-- There are no tests or CI configs in the repo — do not assume test frameworks or pipelines.
+**Domain Models**: Derive from `ModelBase`, mutate state via methods (never property setters):
 
-When you modify startup or DB wiring
+```csharp
+user.ChangeName("New Name");  // Updates UpdatedAt automatically
+user.ChangeStatus(Status.Inactive);
+```
 
-- Update `src/backend/PetManager.Api/Program.cs` only. Keep `Program.cs` minimal and register services there.
+**Repository + Service pattern**:
 
-If anything is unclear
+- **IUserRepository** (infra): CRUD ops, e.g., `GetByUsernameAsync()`
+- **IUserService** (app): business logic, e.g., password validation via BCrypt
 
-- Ask for the preferred DB provider, authentication approach, or where to put new integration tests.
+**API Response wrapper**: All endpoints return `ApiResponse<T>` (see [Models/ApiResponse.cs](src/backend/PetManager.Api/Models/ApiResponse.cs))
 
-Keep this file short — prefer adding small, targeted updates with examples as repository patterns evolve.
+```csharp
+ApiResponse<object>.Success("200", "User created", user)
+ApiResponse<object>.Error("400", "Username taken", null)
+```
+
+**Authentication**: JWT Bearer tokens with Refresh Token support
+
+- Login endpoint: `POST /api/auth/login` (username + password)
+- Token endpoint: `POST /api/auth/token` (API key)
+- Refresh endpoint: `POST /api/auth/refresh` (refresh token)
+- Session timeout: **60 minutes**
+- See [AuthService.cs](src/backend/PetManager.Application/Services/AuthService.cs) + [TokenService.cs](src/backend/PetManager.Application/Services/TokenService.cs)
+
+**Frontend Token Management** (Singleton):
+
+- `TokenManager.getInstance()` handles token storage/refresh
+- Auto-renewal 10 minutes before expiry
+- Callbacks notify when tokens refresh
+- See [TokenManager.ts](src/frontend/petmanager/src/core/TokenManager.ts)
+
+**Frontend API Client**: Automatic JWT injection and 401 handling
+
+- `apiClient.get/post/put/delete()` — auto-adds Authorization header
+- Detects 401, refreshes token, retries original request
+- See [apiClient.ts](src/frontend/petmanager/src/infrastructure/api/apiClient.ts)
+
+**Configuration**: `appsettings.json` (Logging, ConnectionStrings); `appsettings.Development.json` overrides (local Postgres: `docker:docker`)
+
+Frontend: `.env.local` stores `VITE_API_URL` and `VITE_API_KEY`
+
+## When Adding Features
+
+### Backend
+
+1. **New entity**: Create in Domain/Models, derive from `ModelBase` or `Person`
+2. **Database**: Add DbSet to [AppDbContext.cs](src/backend/PetManager.Infrastructure/AppDbContext.cs), configure in OnModelCreating
+3. **Repository**: Add IXxxRepository, implement in Repositories/, register in Program.cs
+4. **Service**: Create IXxxService in Application/Interfaces, implement with business logic
+5. **Controller**: Use attribute routing `[Route("api/[controller]")]`, inject IXxxService, return `IActionResult`
+6. **Migrations**: `dotnet ef migrations add {Name} -p PetManager.Infrastructure -s PetManager.Api`
+
+### Frontend
+
+1. **New page/feature**: Create in `presentation/pages/` or `presentation/components/`
+2. **Infrastructure service**: If calling API, add to `infrastructure/services/`
+3. **Application logic**: Add to `application/services/`
+4. **DTOs**: Add types in `application/dtos/`
+5. **Shared components**: Reusable UI in `presentation/shared/` (e.g., Alert, buttons)
+6. **Routing**: Add route in [App.tsx](src/frontend/petmanager/src/App.tsx)
+7. **Protected routes**: Wrap with `<ProtectedRoute element={<YourPage />} />`
+
+## Frontend File Structure
+
+```
+src/frontend/petmanager/
+├── config/              # Environment & constants
+├── core/                # Singletons (TokenManager, ErrorConstants)
+├── application/         # Business logic (services, DTOs)
+├── infrastructure/      # API client, HTTP services
+├── presentation/        # React components (pages, shared, components)
+└── styles/             # Global CSS
+```
+
+## Where Not to Guess
+
+- No tests or CI pipelines configured — ask before adding test frameworks
+- Frontend integration points — confirm API contract before implementing UI
+- Role-based access control (RBAC) — User has `Role` enum; see [documentation.md](docs/documentation.md) for permission rules per module
+- Token refresh behavior — TokenManager handles 60-minute sessions with auto-refresh
+
+## Conventions
+
+- **Naming**: IFooRepository (interface), FooRepository (impl), IFooService, FooService
+- **IDs**: Always Guid v7 (auto-generated in ModelBase ctor)
+- **Timestamps**: CreatedAt, UpdatedAt (UTC), managed automatically
+- **Password**: Never store plaintext — use BCrypt.Net-Next (see UserService.CreateUserAsync)
+- **DTOs for API**: See Application/DTO — map via AutoMapper (MappingProfile registered in Program.cs)
+- **Frontend Components**: Named exports, PascalCase for React components
+- **Frontend Services**: Singleton instances (not classes)
+
+## Important Files by Feature
+
+**Authentication**:
+
+- Backend: [AuthController.cs](src/backend/PetManager.Api/Controllers/AuthController.cs), [AuthService.cs](src/backend/PetManager.Application/Services/AuthService.cs)
+- Frontend: [LoginPage.tsx](src/frontend/petmanager/src/presentation/pages/LoginPage.tsx), [TokenManager.ts](src/frontend/petmanager/src/core/TokenManager.ts)
+
+**User Management**:
+
+- Backend: [User.cs](src/backend/PetManager.Domain/Models/User.cs), [UserService.cs](src/backend/PetManager.Application/Services/UserService.cs), [UserController.cs](src/backend/PetManager.Api/Controllers/UserController.cs)
+
+## Quick Reference Docs
+
+- **Full Implementation**: [IMPLEMENTATION_SUMMARY.md](IMPLEMENTATION_SUMMARY.md)
+- **Frontend Architecture**: [src/frontend/petmanager/ARCHITECTURE.md](src/frontend/petmanager/ARCHITECTURE.md)
+- **Frontend Setup**: [src/frontend/petmanager/SETUP.md](src/frontend/petmanager/SETUP.md)
+- **Code Examples**: [src/frontend/petmanager/EXAMPLES.md](src/frontend/petmanager/EXAMPLES.md)
+- **Testing Guide**: [LOGIN_TEST_GUIDE.md](LOGIN_TEST_GUIDE.md)
+- **Checklist**: [CHECKLIST.md](CHECKLIST.md)

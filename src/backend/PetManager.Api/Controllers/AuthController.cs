@@ -21,6 +21,30 @@ public class AuthController : ControllerBase
     }
 
     [AllowAnonymous]
+    [HttpPost("login")]
+    public async Task<IActionResult> Login([FromBody] LoginRequestDto req)
+    {
+        if (!ModelState.IsValid)
+        {
+            var errors = string.Join("; ", ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage));
+            var bad = ApiResponse<object>.Error("400", errors, null);
+            return BadRequest(bad);
+        }
+
+        try
+        {
+            var tokenResponse = await _authService.LoginAsync(req.Username, req.Password);
+            var resp = ApiResponse<object>.Success("200", "Login realizado com sucesso", tokenResponse);
+            return Ok(resp);
+        }
+        catch (InvalidOperationException ex)
+        {
+            var errorResp = ApiResponse<object>.Error("401", ex.Message, null);
+            return Unauthorized(errorResp);
+        }
+    }
+
+    [AllowAnonymous]
     [HttpPost("token")]
     public async Task<IActionResult> GetToken([FromBody] ApiKeyTokenRequestDto req)
     {

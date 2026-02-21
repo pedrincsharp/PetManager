@@ -3654,8 +3654,8 @@
         "net10.0": {
           "targetAlias": "net10.0",
           "projectReferences": {
-            "D:\\Projetos\\Desenvolvimento\\Gestão Pet\\src\\backend\\PetManager.Domain\\PetManager.Domain.csproj": {
-              "projectPath": "D:\\Projetos\\Desenvolvimento\\Gestão Pet\\src\\backend\\PetManager.Domain\\PetManager.Domain.csproj"
+            "d:\\Projetos\\Desenvolvimento\\Gestão Pet\\src\\backend\\PetManager.Domain\\PetManager.Domain.csproj": {
+              "projectPath": "d:\\Projetos\\Desenvolvimento\\Gestão Pet\\src\\backend\\PetManager.Domain\\PetManager.Domain.csproj"
             }
           }
         }
